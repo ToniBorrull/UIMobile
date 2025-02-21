@@ -98,6 +98,33 @@ public partial class @NewInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CameraZoom"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""a935657c-6d6a-43cc-8653-efb524cb23ef"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CamRotation"",
+                    ""type"": ""Value"",
+                    ""id"": ""16bb7a89-9822-4f21-8db4-86e6f7acd292"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Drag"",
+                    ""type"": ""Button"",
+                    ""id"": ""691eb8af-c8d5-47f7-888d-339398bcbc4a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -342,6 +369,39 @@ public partial class @NewInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""620f3b8d-364e-4727-8af3-480facdfa2cf"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraZoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b307f664-ff36-44c9-a84c-4b4358f14889"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse;Touch"",
+                    ""action"": ""CamRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""75b63c42-cee5-4095-945c-01414a3e1bfc"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse;Touch"",
+                    ""action"": ""Drag"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -935,6 +995,9 @@ public partial class @NewInputs: IInputActionCollection2, IDisposable
         m_Player_UIEngage = m_Player.FindAction("UIEngage", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+        m_Player_CameraZoom = m_Player.FindAction("CameraZoom", throwIfNotFound: true);
+        m_Player_CamRotation = m_Player.FindAction("CamRotation", throwIfNotFound: true);
+        m_Player_Drag = m_Player.FindAction("Drag", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1016,6 +1079,9 @@ public partial class @NewInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_UIEngage;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Move;
+    private readonly InputAction m_Player_CameraZoom;
+    private readonly InputAction m_Player_CamRotation;
+    private readonly InputAction m_Player_Drag;
     public struct PlayerActions
     {
         private @NewInputs m_Wrapper;
@@ -1028,6 +1094,9 @@ public partial class @NewInputs: IInputActionCollection2, IDisposable
         public InputAction @UIEngage => m_Wrapper.m_Player_UIEngage;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Move => m_Wrapper.m_Player_Move;
+        public InputAction @CameraZoom => m_Wrapper.m_Player_CameraZoom;
+        public InputAction @CamRotation => m_Wrapper.m_Player_CamRotation;
+        public InputAction @Drag => m_Wrapper.m_Player_Drag;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1061,6 +1130,15 @@ public partial class @NewInputs: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @CameraZoom.started += instance.OnCameraZoom;
+            @CameraZoom.performed += instance.OnCameraZoom;
+            @CameraZoom.canceled += instance.OnCameraZoom;
+            @CamRotation.started += instance.OnCamRotation;
+            @CamRotation.performed += instance.OnCamRotation;
+            @CamRotation.canceled += instance.OnCamRotation;
+            @Drag.started += instance.OnDrag;
+            @Drag.performed += instance.OnDrag;
+            @Drag.canceled += instance.OnDrag;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1089,6 +1167,15 @@ public partial class @NewInputs: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @CameraZoom.started -= instance.OnCameraZoom;
+            @CameraZoom.performed -= instance.OnCameraZoom;
+            @CameraZoom.canceled -= instance.OnCameraZoom;
+            @CamRotation.started -= instance.OnCamRotation;
+            @CamRotation.performed -= instance.OnCamRotation;
+            @CamRotation.canceled -= instance.OnCamRotation;
+            @Drag.started -= instance.OnDrag;
+            @Drag.performed -= instance.OnDrag;
+            @Drag.canceled -= instance.OnDrag;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1279,6 +1366,9 @@ public partial class @NewInputs: IInputActionCollection2, IDisposable
         void OnUIEngage(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
+        void OnCameraZoom(InputAction.CallbackContext context);
+        void OnCamRotation(InputAction.CallbackContext context);
+        void OnDrag(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
