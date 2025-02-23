@@ -3,23 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using TMPro;
+using UnityEngine.EventSystems;
+
 
 public class LateralMenu : MonoBehaviour
 {
     public RectTransform menuPanel;
     public float transitionSpeed = 5f;
     public TMP_Text toggleButton;
-    private Vector2 hiddenPosition;
-    private Vector2 visiblePosition;
+    private float hiddenWidth = 0;
+    public float visibleWidth;
     private bool isVisible = false;
+    public GameObject widthHandler;
   
 
     void Start() 
     {
-        visiblePosition = menuPanel.anchoredPosition;
-        hiddenPosition = new Vector2(menuPanel.anchoredPosition.x - menuPanel.rect.width, menuPanel.anchoredPosition.y);
-
-        menuPanel.anchoredPosition = hiddenPosition;
+        visibleWidth = menuPanel.rect.width;
+        menuPanel.sizeDelta = new Vector2(hiddenWidth, menuPanel.sizeDelta.y);
+        widthHandler.SetActive(false);
     }
 
     public void ToggleMenu()
@@ -28,25 +30,26 @@ public class LateralMenu : MonoBehaviour
         if (!isVisible)
         {
             toggleButton.text = "Close";
-            StartCoroutine(AnimateMenu(visiblePosition));
+            StartCoroutine(AnimateMenu(visibleWidth));
+            widthHandler.SetActive(true);
         }
         else if (isVisible)
         {
             toggleButton.text = "Open";
-            StartCoroutine(AnimateMenu(hiddenPosition));
+            StartCoroutine(AnimateMenu(hiddenWidth));
+            widthHandler.SetActive(false);
         }
         isVisible = !isVisible;
-        
     }
 
-    IEnumerator AnimateMenu(Vector2 targetPosition)
+    IEnumerator AnimateMenu(float width)
     {
-        while (Vector2.Distance(menuPanel.anchoredPosition, targetPosition) > 0.1f)
+        while (Mathf.Abs(menuPanel.sizeDelta.x - width) > 0.1f)
         {
-            menuPanel.anchoredPosition = Vector2.Lerp(menuPanel.anchoredPosition, targetPosition, Time.deltaTime * transitionSpeed);
+            menuPanel.sizeDelta = Vector2.Lerp(menuPanel.sizeDelta, new Vector2(width, menuPanel.sizeDelta.y), Time.deltaTime * transitionSpeed);
             yield return null;
         }
-        menuPanel.anchoredPosition = targetPosition; 
+        menuPanel.sizeDelta = new Vector2(width, menuPanel.sizeDelta.y); 
     }
 
 }

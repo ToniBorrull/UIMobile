@@ -12,7 +12,7 @@ public class JoystickInput : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     public Vector2 movement;
     public void OnBeginDrag(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        joystick.position = eventData.position;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -22,13 +22,11 @@ public class JoystickInput : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         movement = Vector2.ClampMagnitude(direction, maxMovement);
         joystick.anchoredPosition = movement;
         movement.Normalize();
-
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         joystick.anchoredPosition = middlePoint.rect.position;
         movement = middlePoint.rect.position;
-
     }
 }
