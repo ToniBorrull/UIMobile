@@ -8,9 +8,14 @@ public class ModifyWidth : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
 {
     public LateralMenu menu;
     RectTransform handle;
+    public float minPos;
+    public float maxPos;
+    public RectTransform canvas;
     private void Start()
     {
         handle = GetComponent<RectTransform>();
+        minPos = canvas.rect.width * 0.2f;
+        maxPos = canvas.rect.width * 0.7f;
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -19,8 +24,11 @@ public class ModifyWidth : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
 
     public void OnDrag(PointerEventData eventData)
     {
-        menu.menuPanel.sizeDelta = new Vector2(eventData.position.x, menu.menuPanel.sizeDelta.y);
-        handle.anchoredPosition = new Vector2(eventData.position.x, handle.anchoredPosition.y);
+        minPos = canvas.rect.width * 0.2f;
+        maxPos = canvas.rect.width * 0.7f;
+        float num = Mathf.Clamp(menu.menuPanel.sizeDelta.x + eventData.delta.x, minPos, maxPos);
+        menu.menuPanel.sizeDelta = new Vector2(num, menu.menuPanel.sizeDelta.y);
+        Debug.Log(num);
     }
 
     public void OnEndDrag(PointerEventData eventData)

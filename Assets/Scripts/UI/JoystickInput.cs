@@ -12,7 +12,7 @@ public class JoystickInput : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     public Vector2 movement;
     public void OnBeginDrag(PointerEventData eventData)
     {
-        joystick.position = eventData.position;
+
     }
 
     public void OnDrag(PointerEventData eventData)
