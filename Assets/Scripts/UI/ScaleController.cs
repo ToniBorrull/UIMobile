@@ -7,13 +7,12 @@ public class ScaleController : MonoBehaviour
 {
     public CanvasScaler canvasScaler;
     public Slider scaleSlider;
-    public float baseX = 400f;
-    public float baseY = 1600f;
+    float baseX = 800f;
+    float baseY = 800f;
 
     void Start()
     {
         scaleSlider.onValueChanged.AddListener(UpdateUIScale);
-        scaleSlider.value = 1f;
         baseX = canvasScaler.referenceResolution.x;
         baseY = canvasScaler.referenceResolution.y;
     }
