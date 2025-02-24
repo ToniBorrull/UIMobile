@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 [RequireComponent(typeof(CameraController))]
 public class CameraInput : MonoBehaviour
@@ -12,8 +11,8 @@ public class CameraInput : MonoBehaviour
     public Slider slider;
     public Toggle toggle;
 
-    public float camSensibility = 10;
-    public bool invert = false;
+    float camSensibility = 10;
+    bool invert = false;
 
     void Start()
     {
