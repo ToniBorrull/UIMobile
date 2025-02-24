@@ -17,7 +17,7 @@ public class ScaleController : MonoBehaviour
         baseX = canvasScaler.referenceResolution.x;
         baseY = canvasScaler.referenceResolution.y;
     }
-    private void UpdateUIScale(float value)
+    void UpdateUIScale(float value)
     {
         canvasScaler.referenceResolution = new Vector2(baseX * value , baseY * value);
     }

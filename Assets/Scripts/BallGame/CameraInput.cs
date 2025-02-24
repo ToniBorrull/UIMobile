@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 [RequireComponent(typeof(CameraController))]
 public class CameraInput : MonoBehaviour
@@ -7,6 +9,11 @@ public class CameraInput : MonoBehaviour
     CameraController controller;
     NewInputs input;
     float screenHeight;
+    public Slider slider;
+    public Toggle toggle;
+
+    public float camSensibility = 10;
+    public bool invert = false;
 
     void Start()
     {
@@ -15,6 +22,9 @@ public class CameraInput : MonoBehaviour
         input.Player.Enable();
         input.UI.Enable();
         screenHeight = Screen.height;
+
+        slider.onValueChanged.AddListener(updateSensibility);
+        toggle.onValueChanged.AddListener(invertCam);
     }
     void Update()
     {
@@ -44,8 +54,23 @@ public class CameraInput : MonoBehaviour
                 rotationDirection = -1;
             }
 
-            float rotationValue = mouseX * rotationDirection * 10 * Time.deltaTime;
+            if (invert)
+            {
+                rotationDirection *= -1;
+            }
+            float rotationValue = mouseX * rotationDirection * camSensibility * Time.deltaTime;
             controller.Rotate(rotationValue);
         }
     }
+
+    void updateSensibility(float value)
+    {
+        camSensibility = value;
+    }
+
+    void invertCam(bool value)
+    {
+        invert = value;
+    }
+
 }
