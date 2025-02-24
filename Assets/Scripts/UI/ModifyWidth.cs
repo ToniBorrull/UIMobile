@@ -4,28 +4,24 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class ModifyWidth : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class ModifyWidth : MonoBehaviour, IDragHandler, IEndDragHandler
 {
     public LateralMenu menu;
     RectTransform handle;
-    public float minPos;
-    public float maxPos;
+    private float minPos;
+    private float maxPos;
     public RectTransform canvas;
+    public float minScreenPos = 0.2f;
+    public float maxScreenPos = 0.7f;
     private void Start()
     {
         handle = GetComponent<RectTransform>();
-        minPos = canvas.rect.width * 0.2f;
-        maxPos = canvas.rect.width * 0.7f;
-    }
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        
+        GetCanvasViewport();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        minPos = canvas.rect.width * 0.2f;
-        maxPos = canvas.rect.width * 0.7f;
+        GetCanvasViewport();
         float num = Mathf.Clamp(menu.menuPanel.sizeDelta.x + eventData.delta.x, minPos, maxPos);
         menu.menuPanel.sizeDelta = new Vector2(num, menu.menuPanel.sizeDelta.y);
         Debug.Log(num);
@@ -34,5 +30,11 @@ public class ModifyWidth : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     public void OnEndDrag(PointerEventData eventData)
     {
         menu.visibleWidth = menu.menuPanel.sizeDelta.x;
+    }
+
+    private void GetCanvasViewport()
+    {
+        minPos = canvas.rect.width * minScreenPos;
+        maxPos = canvas.rect.width * maxScreenPos;
     }
 }
