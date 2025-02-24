@@ -17,6 +17,7 @@ public class LateralMenu : MonoBehaviour
     public GameObject widthHandler;
     public Sprite toggleImage;
     public Sprite closeImage;
+    public GameObject mask1;
   
 
     void Start() 
@@ -35,6 +36,7 @@ public class LateralMenu : MonoBehaviour
             StartCoroutine(AnimateMenu(visibleWidth));
             widthHandler.SetActive(true);
             Time.timeScale = 0f;
+            mask1.SetActive(true);
         }
         else if (isVisible)
         {
@@ -42,6 +44,7 @@ public class LateralMenu : MonoBehaviour
             StartCoroutine(AnimateMenu(hiddenWidth));
             widthHandler.SetActive(false);
             Time.timeScale = 1f;
+            mask1.SetActive(false);
         }
         isVisible = !isVisible;
     }
