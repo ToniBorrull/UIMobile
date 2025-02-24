@@ -12,10 +12,12 @@ public class JoystickInput : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     public Vector2 movement;
 
     private Vector2 initialPos;
+
     private void Start()
     {
-        initialPos = new Vector2(-25, -25);
+        initialPos = joystick.anchoredPosition;
     }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
 
@@ -23,13 +25,12 @@ public class JoystickInput : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log(eventData.position);
+        Vector2 dir = eventData.position - (Vector2)middlePoint.position;
 
-        Vector2 direction = (eventData.position - initialPos) - initialPos;
-        movement = Vector2.ClampMagnitude(direction, maxMovement);
-        joystick.anchoredPosition = movement;
+        movement = Vector2.ClampMagnitude(dir, maxMovement);
+        joystick.anchoredPosition = initialPos + movement;
+
         movement.Normalize();
-
     }
 
     public void OnEndDrag(PointerEventData eventData)
