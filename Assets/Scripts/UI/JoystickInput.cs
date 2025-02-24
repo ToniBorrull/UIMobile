@@ -10,25 +10,32 @@ public class JoystickInput : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     public RectTransform joystick;
     public float maxMovement = 50f;
     public Vector2 movement;
+
+    private Vector2 initialPos;
+
+    private void Start()
+    {
+        initialPos = joystick.anchoredPosition;
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log(eventData.position);
-        Vector2 direction = eventData.position - (Vector2)middlePoint.position;
-        movement = Vector2.ClampMagnitude(direction, maxMovement);
-        joystick.anchoredPosition = movement;
-        movement.Normalize();
+        Vector2 dir = eventData.position - (Vector2)middlePoint.position;
 
+        movement = Vector2.ClampMagnitude(dir, maxMovement);
+        joystick.anchoredPosition = initialPos + movement;
+
+        movement.Normalize();
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        joystick.anchoredPosition = middlePoint.rect.position;
-        movement = middlePoint.rect.position;
-
+        joystick.anchoredPosition = initialPos;
+        movement = Vector2.zero;
     }
 }

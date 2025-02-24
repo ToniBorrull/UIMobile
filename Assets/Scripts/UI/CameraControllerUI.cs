@@ -23,22 +23,22 @@ public class CameraControllerUI : MonoBehaviour
 
     public void RotateLeft()
     {
-        controller.Rotate(zoomVal);
+        controller.Rotate(rotVal);
     }
 
     public void RotateRight()
     {
-        controller.Rotate(-zoomVal);
+        controller.Rotate(-rotVal);
     }
 
     public void ZoomIn()
     {
-        controller.Zoom(rotVal);
+        controller.Zoom(zoomVal);
     }
 
     public void ZoomOut()
     {
-        controller.Zoom(-rotVal);
+        controller.Zoom(-zoomVal);
     }
 
     public void ChangeFocus()
