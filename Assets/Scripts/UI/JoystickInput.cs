@@ -11,7 +11,7 @@ public class JoystickInput : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     public float maxMovement = 50f;
     public Vector2 movement;
 
-    private Vector2 initialPos;
+    public Vector2 initialPos;
 
     private void Start()
     {

@@ -1,6 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(CameraController))]
 public class CameraInput : MonoBehaviour
@@ -38,28 +42,34 @@ public class CameraInput : MonoBehaviour
         }
 
         //falta touch
-        if (input.Player.Drag.IsPressed()) 
+        Debug.Log(EventSystem.current.IsPointerOverGameObject());
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            Vector2 mousePos = input.Player.CamRotation.ReadValue<Vector2>();
-            float mouseX = mousePos.x;
-            float mouseY = Mouse.current.position.ReadValue().y;
+            if (input.Player.Drag.IsPressed())
+            {
+                Vector2 mousePos = input.Player.CamRotation.ReadValue<Vector2>();
+                float mouseX = mousePos.x;
+                float mouseY = Mouse.current.position.ReadValue().y;
 
-            float rotationDirection;
-            if (mouseY > screenHeight / 2)
-            {
-                rotationDirection = 1;
-            } else
-            {
-                rotationDirection = -1;
-            }
+                float rotationDirection;
+                if (mouseY > screenHeight / 2)
+                {
+                    rotationDirection = 1;
+                }
+                else
+                {
+                    rotationDirection = -1;
+                }
 
-            if (invert)
-            {
-                rotationDirection *= -1;
+                if (invert)
+                {
+                    rotationDirection *= -1;
+                }
+                float rotationValue = mouseX * rotationDirection * camSensibility * Time.deltaTime;
+                controller.Rotate(rotationValue);
             }
-            float rotationValue = mouseX * rotationDirection * camSensibility * Time.deltaTime;
-            controller.Rotate(rotationValue);
         }
+
     }
 
     void updateSensibility(float value)
