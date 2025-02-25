@@ -11,8 +11,8 @@ public class ModifyWidth : MonoBehaviour, IDragHandler, IEndDragHandler
     private float minPos;
     private float maxPos;
     public RectTransform canvas;
-    public float minScreenPos = 0.2f;
-    public float maxScreenPos = 0.7f;
+    public float minScreenPos = 0.45f;
+    public float maxScreenPos = 0.6f;
     private void Start()
     {
         handle = GetComponent<RectTransform>();
@@ -29,6 +29,7 @@ public class ModifyWidth : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        GetCanvasViewport();
         menu.visibleWidth = menu.menuPanel.sizeDelta.x;
     }
 
