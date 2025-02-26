@@ -39,7 +39,6 @@ public class CameraInput : MonoBehaviour
             controller.Zoom(5);
         }
 
-        //falta touch
         Debug.Log(EventSystem.current.IsPointerOverGameObject());
         if (!EventSystem.current.IsPointerOverGameObject())
         {
