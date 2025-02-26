@@ -11,7 +11,6 @@ public class WorldToUI : MonoBehaviour
     RectTransform canvasRect;
     public Transform target;
     public Image targetColor;
-    bool targetIsVisible;
     Color color;
     private void Start()
     {
@@ -23,7 +22,7 @@ public class WorldToUI : MonoBehaviour
 
     void Update()
     {
-         Vector3 pos = cam.WorldToViewportPoint(target.position);
+        Vector3 pos = cam.WorldToViewportPoint(target.position);
         
         if(pos.z < 0)
         {
@@ -59,14 +58,12 @@ public class WorldToUI : MonoBehaviour
         Vector3 viewport = cam.WorldToViewportPoint(target);
         if (viewport.x >= 0 && viewport.x <= 1 && viewport.y >= 0 && viewport.y <= 1 && viewport.z > 0)
         {
-            targetIsVisible = true;
             color.a = .5f;
             targetColor.color = color;
             
         }
         else
         {
-            targetIsVisible = false;
             color.a = 1f;
             targetColor.color = color;
         }

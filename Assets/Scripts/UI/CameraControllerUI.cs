@@ -8,8 +8,6 @@ public class CameraControllerUI : MonoBehaviour
     public float zoomVal;
     public float rotVal;
 
-    public GameObject ballIndicator;
-
     float opt = 0;
 
     // Start is called before the first frame update
@@ -54,17 +52,14 @@ public class CameraControllerUI : MonoBehaviour
         if (opt == 0)
         {
             controller.SwitchTargetBall();
-            ballIndicator.SetActive(false);
         } 
         else if (opt == 1)
         {
             controller.SwitchTargetTarget();
-            ballIndicator.SetActive(true);
         } 
         else
         {
             controller.SwitchTargetMiddlepoint();
-            ballIndicator.SetActive(true);
         }
     }
 }
