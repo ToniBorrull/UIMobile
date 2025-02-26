@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform))]
 public class WorldToUI : MonoBehaviour
@@ -9,10 +10,15 @@ public class WorldToUI : MonoBehaviour
     RectTransform rectTransform;
     RectTransform canvasRect;
     public Transform target;
+    public Image targetColor;
+    bool targetIsVisible;
+    Color color;
     private void Start()
     {
         cam = Camera.main;
         rectTransform = GetComponent<RectTransform>();
+        color = targetColor.color;
+
     }
 
     void Update()
@@ -45,5 +51,24 @@ public class WorldToUI : MonoBehaviour
        
         rectTransform.anchorMin = pos;
         rectTransform.anchorMax = pos;
+
+        TargetVisible(target.position);
+    }
+    private void TargetVisible(Vector3 target)
+    {
+        Vector3 viewport = cam.WorldToViewportPoint(target);
+        if (viewport.x >= 0 && viewport.x <= 1 && viewport.y >= 0 && viewport.y <= 1 && viewport.z > 0)
+        {
+            targetIsVisible = true;
+            color.a = .5f;
+            targetColor.color = color;
+            
+        }
+        else
+        {
+            targetIsVisible = false;
+            color.a = 1f;
+            targetColor.color = color;
+        }
     }
 }
