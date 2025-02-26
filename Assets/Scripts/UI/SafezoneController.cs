@@ -9,25 +9,23 @@ public class SafezoneController : MonoBehaviour
     public Slider safeX;
     public Slider safeY;
 
-    Vector2 startSize;
-
     void Start()
     {
         safeX.onValueChanged.AddListener(updateX);
         safeY.onValueChanged.AddListener(updateY);
-        startSize = new Vector2(panel.rect.width, panel.rect.height);
     }
 
     void updateX(float value)
     {
-        panel.offsetMin = new Vector2(startSize.x * value, panel.offsetMin.y);
-        panel.offsetMax = new Vector2(startSize.x * -value, panel.offsetMax.y);
+        float width = Screen.width;
+        panel.offsetMin = new Vector2(width * value * 0.5f, panel.offsetMin.y);
+        panel.offsetMax = new Vector2(-width * value * 0.5f, panel.offsetMax.y);
     }
 
     void updateY(float value)
     {
-        panel.offsetMin = new Vector2(panel.offsetMin.x, startSize.y * value);
-        panel.offsetMax = new Vector2(panel.offsetMax.x, startSize.y * -value);
+        float height = Screen.height;
+        panel.offsetMin = new Vector2(panel.offsetMin.x, height * value * 0.5f);
+        panel.offsetMax = new Vector2(panel.offsetMax.x, -height * value * 0.5f);
     }
-
 }
